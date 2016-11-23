@@ -14,7 +14,7 @@ LINKFLAGS=-lm
 CFLAGS=-URUNSIM
 SIMCFLAGS=-pthread -DRUNSIM
 
-all: $(APP)-sim $(APP)-hw
+all: $(APP)-sim
 	
 $(APP)-sim: $(APP).c
 	$(CC) -o $@ $(SIMCFLAGS) -I$(PSLSE_LIBCXL) -I$(PSLSE_CXL_H) $^ $(PSLSE_LIBCXL_LIBS) $(LINKFLAGS)
