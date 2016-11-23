@@ -4,7 +4,7 @@
 if [ ! -d "pslse" ]; then
   git clone https://github.com/ibm-capi/pslse.git
 	cd pslse
-  git git checkout tags/v2.0
+  git checkout tags/v2.0
 	cd ..
 else
 	git pull pslse
