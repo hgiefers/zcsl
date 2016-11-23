@@ -3,6 +3,9 @@
 # Checkout Power Service Layer Simulation Engine (PSLSE). Contains the simulation version of libcxl.c.
 if [ ! -d "pslse" ]; then
   git clone https://github.com/ibm-capi/pslse.git
+	cd pslse
+  git git checkout tags/v2.0
+	cd ..
 else
 	git pull pslse
 fi
