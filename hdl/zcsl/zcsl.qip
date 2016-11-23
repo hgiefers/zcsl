@@ -1,0 +1,52 @@
+################################################################
+# IBM Research - Zurich
+# Zurich CAPI Streaming Layer
+# Raphael Polig <pol@zurich.ibm.com>
+# Heiner Giefers <hgi@zurich.ibm.com>
+################################################################
+
+
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../3rd_party/spiral-dft.v"]
+#
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_arbrr.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_bucket.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_cmd.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_ctrl.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_decode.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_dff.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_dffea.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_endian_swap.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_fifo.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_get.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_lag.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_mmio.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_put.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_puts.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_ram_1r1w.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_selector.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_sequencer.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_srffa.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_top.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_trace.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_irq.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_lag_put.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_shrea.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_core_fft.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_packer.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_fifo_wdcnt.v"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "zcsl_streaming_fft.v"]
+
+
+# Add the path to the search_path to find the MIF file
+#set_global_assignment -name SEARCH_PATH $::quartus(qip_path)
+
+
+# Add the PLL QIP file
+#set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) "../quartus_ip/zcsl_pll/zcsl_pll.qip"]
+
+# Add the PR CTRL QIP file
+#set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) "../quartus_ip/zcsl_pr/zcsl_pr.qip"]
+
+
+# Add the ZCSL design constraint file
+set_global_assignment -name SDC_FILE [file join $::quartus(qip_path) "zcsl.sdc"]

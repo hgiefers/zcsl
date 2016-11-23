@@ -1,0 +1,108 @@
++----------------------------------------+
+|                CAPI FFT                |
++----------------------------------------+
+
+I. Introduction
+
+This package contains RTL and C test code for an Accelerator Function Unit (AFU)
+for FFT computations. It applies IBM's Coherent Accelerator Processor Interface
+(CAPI) and can be implemented on a POWER8 based system hosting a CAPI enabled
+FPGA accelerator card.
+
+
+II. Requirements
+
+1. FFT Engine: This package does not include IP for the streaming FFT kernel.
+Both major FPGA chip vendors (Xilinx/Altera) provide streaming FFT cores with
+their development tool suites. An alternative to these IP is the Spiral DFT/FFT
+IP Core Generator [http://www.spiral.net/hardware/dftgen.html].
+The RTL code assumes Spiral-generated FFT core for a one-dimensional 4096-point
+FFT using single-precision complex data. However, the accelerator can be easily
+adapted to employ Spiral FFT cores with different problem parameters or the
+Xilinx/Altera IP cores.
+
+2. CXL library (libcxl): The CXL library [https://github.com/ibm-capi/libcxl]
+provides a userspace API for CAPI-attached devices.
+
+3. Power Service Layer Simulation Engine (pslse): The pslse environment
+[https://github.com/ibm-capi/pslse] is used to simulate and test customer
+designed AFUs. It includes the following components:
+
+ - AFU driver: Simulation top-level verilog module and C code implementing the
+   hardware/software co-simulation interface. Works with most industry standard
+   Verilog simulators.
+ - pslse: The pslse server implements a hardware simulation layer for the CAPI
+   link and PSL module.
+ - libcxl: The simulation only version of the libcxl library functions
+   interfaces with the pslse server to to run a co-simulation of the host
+   application and the simulated AFU.
+
+4. gnuplot for the host application to visualize the input data for the FFT test
+program.
+
+
+III. Directory Structure
+
+ - hdl/zcsl/       Contains RTL code for the Zurich CAPI Streaming Layer (ZCSL)
+                   and the FFT wrapper
+ - hdl/3rd_party/  Prepared directory for 3rd party IP (e.g. the Spiral FFT
+                   modules)
+ - ncsim/          Contains a simulation script 'run.sh' to start a NCSIM based
+                   simulation of the APU
+ - sw/             Contains a script 'make-dep.sh' to download and build
+                   dependencies (libcxl, pslse)
+ - sw/zcsl-fft/    Contains a test host application for the FFT.
+
+
+III. Simulation Steps
+
+1. Visit 'http://www.spiral.net/hardware/dftgen.html' and use the web tool to
+generate a streaming FFT core. The existing RTL code in 'hdl/zcsl/' assumes a
+one-dimensional 4096-point FFT with complex float data. In order to generate the
+same IP with the Spiral web tool apply the following setting:
+
+   a) Problem specification
+      transform size: 4096
+      direction: forward
+      data type: floating point
+
+   b) Parameters controlling implementation
+      architecture: fully streaming
+      radix: 2
+      streaming width: 2
+      data ordering: natural
+      BRAM budget: -1
+      Permutation method: JACM'09
+
+For other FFT problems, adapt the parameters in 'hdl/zcsl/zcsl_streaming_fft.v'
+accordingly. We provide as script 'hdl/get_params.sh' that helps with generating
+proper parameters.
+
+2. Download and build dependencies by running 'make-dep.sh' in the 'sw/'
+directory. This will download the CXL library and the pslse environment from
+github and build the required packages.
+
+3. Run the hardware simulation. For NCSIM this can be done by running 'run.sh'
+from the 'ncsim/' directory. A description of how to run the AFU simulation for
+other Verilog simulators can be found in the pslse repository
+[https://github.com/ibm-capi/pslse/blob/master/SIMULATOR_SETUP]. 
+
+4. Start the pslse server by running './pslse' in 'sw/pslse/pslse/'. The pslse
+server reads the file 'shim_host.dat' in 'sw/pslse/pslse/' to look for AFU
+servers (simulators) that it can connect to. The AFU server and pslse server
+can run on the same or different computers.
+
+5. Build and run the host application. A Makefile is provided in 'sw/zcsl-fft/'
+to build the simulation and CAPI versions of the host app. The simulation links
+against the pslse simulation only version of the CXL library that can be build
+for ppc64, ppc64le, and X86_64. To build the simulation executable, run
+'make zcsl-fft-sim'. The actual CAPI version can only be used on POWER.
+
+
+IV. Build the AFU
+
+The FFT AFU was tested on Xilinx and Altera FPGAs. Please use the CAPI HDK for
+the targeted accelerator card to build the AFU.
+
+
+
